@@ -1,0 +1,11 @@
+__pycache__
+.env
+database.db
+*.vscode
+*.png
+*.jpg
+*.jpeg
+*.json
+result.json
+*.python-version
+venv/

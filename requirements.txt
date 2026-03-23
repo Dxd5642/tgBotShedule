@@ -1,0 +1,13 @@
+pandas
+jsons
+requests
+iolib
+aiosqlite
+python-dotenv
+beautifulsoup4
+httpx
+fastapi
+uvicorn
+pyside6
+openpyxl
+xlrd
