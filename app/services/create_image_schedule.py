@@ -147,7 +147,7 @@ async def save_schedule_image(data, role=0, app=None):
 
         output_path = setting.BASE_DIR / "img_shedule.png"
 
-        if image.save(output_path):
+        if image.save(str(output_path)):
            print(f"Картинка успешно создана: {output_path}")
         else:
             print("Не удалось сохранить изображение")

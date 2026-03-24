@@ -1,7 +1,7 @@
 from fastapi import APIRouter, status, Response, Query
 from app.api.schemas.api_models import *
 from app.services import utils as ut 
-from app.core.database_utils import create_new_user_for_tg # Поместить в utils
+from app.core.database_utils import create_new_user_for_tg, change_type_response_schedule, change_on_off_alerts_change_sch # Поместить в utils
 
 
 router = APIRouter(prefix="/v1/users", tags=["Users"])
@@ -62,7 +62,7 @@ async def func_change_user_type_response_schedule(data: UserChangeTypeResSch, re
         dict: _Ответ сервера_
     """
     try:
-        res = await ut.change_type_response_schedule(data.chat_id, data.type)
+        res = await change_type_response_schedule(data.chat_id, data.type)
         if res['status'] == 'error':
             return {
             'status': 'error',
@@ -101,7 +101,7 @@ async def func_change_user_alerts_by_change(data: UserChangeTypeResSch, response
         dict: _Ответ сервера_
     """
     try:
-        res = await ut.change_type_response_schedule(data.chat_id, data.type)
+        res = await change_type_response_schedule(data.chat_id, data.type)
         if res['status'] == 'error':
             return {
             'status': 'error',
