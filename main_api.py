@@ -1,7 +1,6 @@
 import argparse
 from app.api.main import create_app
 import uvicorn, sys
-import app.core.logging_db
 
 def main(args: list[str]) -> int:
     try:
