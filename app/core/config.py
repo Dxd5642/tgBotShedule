@@ -17,6 +17,9 @@ class Setting:
 
     SCHOOL_SHEDULE_SITE: str = os.getenv("SCHOOL_SCHEDULE_SITE")
 
+    if SCHOOL_SHEDULE_SITE is None:
+        raise ValueError("Невозможно запустить программу без указав ссылку на КЦПТ сайт")
+
 
 setting = Setting()
 

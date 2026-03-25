@@ -145,7 +145,9 @@ async def save_schedule_image(data, role=0, app=None):
         doc.drawContents(painter)
         painter.end()
 
-        output_path = setting.BASE_DIR / "img_shedule.png"
+        output_path = setting.BASE_DIR / "shedule_imgs"
+        output_path.mkdir(parents=True, exist_ok=True)
+        output_path = output_path / f"img_shedule_{day_date}.png"
 
         if image.save(str(output_path)):
            print(f"Картинка успешно создана: {output_path}")

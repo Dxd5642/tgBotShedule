@@ -10,3 +10,4 @@ result.json
 *.python-version
 venv/
 logs/
+shedule_imgs/
