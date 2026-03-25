@@ -9,3 +9,4 @@ database.db
 result.json
 *.python-version
 venv/
+shedule_imgs/
