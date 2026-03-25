@@ -1,4 +1,5 @@
 import logging, os
+from logging.handlers import RotatingFileHandler 
 
 def setup_logging():
     if not os.path.exists("logs"):
@@ -20,3 +21,9 @@ def setup_logging():
 
 
 setup_logging()
+
+
+class AppLoggers:
+    db: logging.Logger
+
+    # Дописать лошшер
