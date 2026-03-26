@@ -6,8 +6,6 @@ from app.core.logger_setup import AppLoggers
 
 DB_PATH = setting.DATABASE_PATH
 
-AppLoggers.db.info("Запустился модуль Базы данных")
-
 def get_day_name(date_str: str) -> str:
     days = {
         0: "Понедельник",

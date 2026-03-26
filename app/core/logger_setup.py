@@ -31,5 +31,6 @@ class AppLoggers:
         cls.db = create_logger("db", 'database.log')
         cls.utils = create_logger("utils", 'utils.log')
         cls.bot = create_logger("bot", 'database.log')
+        cls.api = create_logger("api", 'api.log')
 
 AppLoggers.init()

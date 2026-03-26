@@ -1,10 +1,12 @@
 from fastapi import APIRouter, status
 from app.api.schemas.api_models import *
+from app.core.logger_setup import AppLoggers
 
 router = APIRouter(prefix="", tags=['Main'])
 
 @router.get("/", response_model=APIResponse, status_code=status.HTTP_200_OK)
 async def index_req():
+        AppLoggers.api.info("Запрос на эндпоинт '/'")
         return {
             'status': 'success',
             'code': 200,
@@ -15,6 +17,7 @@ async def index_req():
 
 @router.get('/health', response_model=APIResponse, status_code=status.HTTP_200_OK)
 async def health_req():
+    AppLoggers.api.info("Запрос на эндпоинт '/health'")
     return {
         'status': 'success',
         'code': 200,

@@ -1,12 +1,12 @@
 from fastapi import FastAPI, status
 from fastapi.middleware.cors import CORSMiddleware
 from PySide6.QtWidgets import QApplication
-import os, sys
 from app.api.router import router as main_router
 from app.api.v1 import users, schedules
 from app.api.schemas.api_models import *
 from app.services.utils import initialization_database
 from app.core.config import setting
+import os, sys
 
 BASE_DIR = setting.BASE_DIR
 DATABASE_PATH = setting.DATABASE_PATH
