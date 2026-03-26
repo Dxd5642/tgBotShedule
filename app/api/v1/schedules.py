@@ -2,8 +2,13 @@ from fastapi import APIRouter, status, Response, Query
 from app.api.schemas.api_models import *
 from app.services import utils  as ut
 from PySide6.QtWidgets import QApplication
+from app.core.logger_setup import AppLoggers
+
+
 
 router = APIRouter(prefix="/v1/schedules", tags=["Schedules"])
+
+
 
 @router.get("/groups/{group_name}", 
             response_model=APIResponse, 
@@ -22,16 +27,19 @@ async def func_get_schedule_for_group(group_name: str, response: Response, targe
     """
     try:
         # Обращаемся к функции получения расписания
+        AppLoggers.api.info(f"Запрос на '/v1/schedules/groups/' для группы :{group_name} {subgroup} на дату {target_date}")
         res = await ut.get_schedule_for_student_by_group_name_and_subgroup(group_name, str(subgroup), target_date)
 
         if res['status'] == "error":
             response.status_code = 500
+            AppLoggers.api.warning(f"Ошибка обработки запроса '/v1/schedules/groups/'. Ошибка: {res['content']}")
             return{
                 'status': 'error',
                 'code': 500,
                 'message': str(res['content'])
             }
 
+        AppLoggers.api.info(f"Успешная обработка запроса '/v1/schedules/groups/'")
         return {
             'status': 'success',
             'code': 200,
@@ -43,6 +51,7 @@ async def func_get_schedule_for_group(group_name: str, response: Response, targe
 
     except Exception as e:
         response.status_code = 500
+        AppLoggers.api.warning(f"Ошибка обработки запроса '/v1/schedules/groups/'. Ошибка: {e}", exc_info=True)
         return{
                 'status': 'error',
                 'code': 500,
