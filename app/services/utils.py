@@ -613,42 +613,8 @@ async def add_changes_from_site() -> dict:
         xl = pd.ExcelFile(BytesIO(response.content))
         shs = xl.sheet_names
         shs.sort()
-        print(shs)
-        tmp_shs = []
-        for i in shs:
-            day, mouth, year = i.split(".")
-
-            if len(day) != 2:
-                print("День не нормализован")
-                if day == "0":
-                    continue
-                else:
-                    print("День нормализован")
-                    day = "0" + day
-
-            if len(mouth) != 2:
-                print("Месяц не нормализован")
-                if mouth == "0":
-                    continue
-                else:
-                    print("Месяц нормализован")
-                    mouth = "0" + mouth
-
-            if len(year) != 4:
-                print("Год не нормализован")
-                if year == '202' or year == '026' or year == "226":
-                    print("Год нормализован")
-                    year = '2026'
-                else:
-                    continue
-            
-            res_date = ".".join((day, mouth, year))
-            tmp_shs.append(res_date)
-
-        tmp_shs.sort()
-        shs = tmp_shs
-        print(shs)
         count_updates = 0
+
         for last_date in shs:
             check = await check_last_schedule_update(2, last_date)
             if check['status'] == 'error':
@@ -667,6 +633,37 @@ async def add_changes_from_site() -> dict:
             out_data = [] # Структура: (Дата изменения расписания, Название группы, Подгруппа, Тип изменения, Номер урока, Название пары, Кабинет, Препод, Дата внесения изменений в бд)
             list_changes_for_groups = []
             list_changes_for_teachers = []
+
+            check_changes = False
+            day, mouth, year = last_date.split(".")
+            if len(day) != 2:
+                print("День не нормализован")
+                if day == "0":
+                    continue
+                else:
+                    print("День нормализован")
+                    day = "0" + day
+                    check = True
+
+            if len(mouth) != 2:
+                print("Месяц не нормализован")
+                if mouth == "0":
+                    continue
+                else:
+                    print("Месяц нормализован")
+                    mouth = "0" + mouth
+                    check = True
+
+            if len(year) != 4:
+                print("Год не нормализован")
+                if year == '202' or year == '026' or year == "226":
+                    print("Год нормализован")
+                    year = '2026'
+                    check = True
+                else:
+                    continue
+            
+            res_date = ".".join((day, mouth, year)) if check else last_date
 
             for item in data:
                 list_changes_for_groups.append(item[0])
@@ -692,26 +689,26 @@ async def add_changes_from_site() -> dict:
                 less_nums = item[1].split('-')
                 if len(less_nums) == 1:
                     out_data.append(
-                        (last_date, item[0], subgroup, type_change, int(item[1]), subject, item[5], item[4], datetime.today().strftime('%Y-%m-%d'), item[6])
+                        (res_date, item[0], subgroup, type_change, int(item[1]), subject, item[5], item[4], datetime.today().strftime('%Y-%m-%d'), item[6])
                     )
                 else:
                     for n in range(int(less_nums[0]), int(less_nums[1]) + 1):
                         out_data.append(
-                        (last_date, item[0], subgroup, type_change, n, subject, item[5], item[4], datetime.today().strftime('%Y-%m-%d'), item[6])
+                        (res_date, item[0], subgroup, type_change, n, subject, item[5], item[4], datetime.today().strftime('%Y-%m-%d'), item[6])
                     )
                 
             list_changes_for_groups = list(set(list_changes_for_groups))
             list_changes_for_teachers = list(set(list_changes_for_teachers))
 
-            full_data = {"date": last_date, "groups": list_changes_for_groups, 'theachers': list_changes_for_teachers}
-            func_for_check_result(full_data, f'list_date_{last_date}')
+            full_data = {"date": res_date, "groups": list_changes_for_groups, 'theachers': list_changes_for_teachers}
+            func_for_check_result(full_data, f'list_date_{res_date}')
 
 
             res = await dbu.change_lessons_change(out_data)
             if res['status'] == 'error':
                 return {'status': 'error', 'content': res['content']}
                 
-            res = await add_note_action_in_bd(2, last_date)
+            res = await add_note_action_in_bd(2, res_date)
             if res['status'] == 'error':
                     return {'status': 'error', 'content': res['content']}
             
