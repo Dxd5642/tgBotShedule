@@ -613,14 +613,41 @@ async def add_changes_from_site() -> dict:
         xl = pd.ExcelFile(BytesIO(response.content))
         shs = xl.sheet_names
         shs.sort()
-        # sheets = []
+        print(shs)
+        tmp_shs = []
+        for i in shs:
+            day, mouth, year = i.split(".")
 
-        # for i in shs:
-        #     i = datetime.strptime(i, '%d.%m.%Y')
-        #     sheets.append(i)
+            if len(day) != 2:
+                print("День не нормализован")
+                if day == "0":
+                    continue
+                else:
+                    print("День нормализован")
+                    day = "0" + day
 
+            if len(mouth) != 2:
+                print("Месяц не нормализован")
+                if mouth == "0":
+                    continue
+                else:
+                    print("Месяц нормализован")
+                    mouth = "0" + mouth
 
-        # last_date = shs[sheets.index(max(sheets))]
+            if len(year) != 4:
+                print("Год не нормализован")
+                if year == '202' or year == '026' or year == "226":
+                    print("Год нормализован")
+                    year = '2026'
+                else:
+                    continue
+            
+            res_date = ".".join((day, mouth, year))
+            tmp_shs.append(res_date)
+
+        tmp_shs.sort()
+        shs = tmp_shs
+        print(shs)
         count_updates = 0
         for last_date in shs:
             check = await check_last_schedule_update(2, last_date)
@@ -976,23 +1003,4 @@ async def get_schedule_from_bd(chat_id: str, date: str, engine: QApplication) ->
 
 
 if __name__ == "__main__":
-    # res = asyncio.run(initialization_database())
-    # print(res)
-    # ====== Проверка парсинга и сохранения главного расписания ======
-    # res = asyncio.run(update_schedule_from_site())
-    # print(res)
-    # ================================================================
-
-    # ====== Проверка парсинга и сохранения измененний в расписании ==
-    # res = asyncio.run(add_changes_from_site())
-    # print(res)
-    
-    # res = asyncio.run(get_schedule_from_bd('77777777', '2026-03-19'))
-    # print(res['status'])
-    # if res['status'] == 'error':
-    #     print(res['content'])
-
-    # from img import create_image_schedule
-    # create_image_schedule.save_schedule_image(res['content'])
-    # ====================================================================
     raise RuntimeWarning("Не предназначен для самостоятельного запуска")
