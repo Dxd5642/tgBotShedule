@@ -1,6 +1,6 @@
 __pycache__
 .env
-database.db
+*.db
 *.vscode
 *.png
 *.jpg

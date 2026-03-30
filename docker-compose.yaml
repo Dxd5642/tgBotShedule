@@ -1,0 +1,10 @@
+version: '3.8'
+
+services:
+  app:
+    build: .
+    ports:
+      - 5555:8000
+    volumes:
+      - ./shedule_imgs:/app/shedule_imgs
+      - ./app/database:/app/app/database
