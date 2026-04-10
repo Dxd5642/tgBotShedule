@@ -22,7 +22,7 @@ class NewUserData(BaseModel):
 
 class UserSchReq(BaseModel):
     chat_id: str
-    date: Optional[str] = str(datetime.date.today)
+    date: Optional[str] = str(datetime.date.today())
     
 
 class UserChangeTypeResSch(BaseModel):

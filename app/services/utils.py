@@ -672,6 +672,7 @@ async def add_changes_from_site() -> dict:
                     list_changes_for_teachers.append(item[4])
 
                 type_change = 0
+                print(item)
 
                 if item[2].lower() == 'отмена': type_change = 0
                 elif item[2].lower() == 'будет' or item[2].lower() == 'замена': type_change = 1

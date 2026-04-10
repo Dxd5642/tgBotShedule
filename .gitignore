@@ -1,6 +1,6 @@
 __pycache__
 .env
-database.db
+*.db
 *.vscode
 *.png
 *.jpg
@@ -10,3 +10,4 @@ result.json
 *.python-version
 venv/
 shedule_imgs/
+task_on_next_day.txt
