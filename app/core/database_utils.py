@@ -709,7 +709,6 @@ async def get_schedule_for_student_by_group_and_subgroup(group_id: str, subgroup
                     'lessons': lessons
                 }
 
-
                 return {'status': 'success', 'content': res}
 
     except EOFError as e:

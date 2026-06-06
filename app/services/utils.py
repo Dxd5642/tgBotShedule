@@ -936,7 +936,6 @@ async def get_schedule_from_bd(chat_id: str, date: str, engine: QApplication) ->
         if res['status'] == 'error':
             return {'status': 'error', 'content': res['content']}
         
-        
         type_res = res['content'][8]
         sch_img_res = ""
                         
